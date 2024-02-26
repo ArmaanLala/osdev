@@ -30,10 +30,9 @@ $(BINDIR)/%.o: $(SRCDIR)/%.c | $(BINDIR)
 $(BINDIR)/%.o: $(SRCDIR)/%.S | $(BINDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Linking objects to create the kernel.elf, then convert to kernel.img
+# Linking objects to create the kernel.elf
 kernel.img: $(OBJS) link.ld | $(BINDIR)
 	ld.lld $(LDFLAGS) -o $(BINDIR)/kernel.elf $(OBJS)
-	llvm-objcopy -O binary $(BINDIR)/kernel.elf kernel.img
 
 # Clean up
 clean:
@@ -41,7 +40,7 @@ clean:
 
 dump:
 	qemu-system-aarch64 -M virt,dumpdtb=virt.dtb -kernel kernel.img
-	dtc -I dtb -O dts -o output.dts virt.dtb
+	dtc -I dtb -O dts -o device_tree.dts virt.dtb
 	
 # Run the kernel in QEMU
 run:

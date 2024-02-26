@@ -1,10 +1,9 @@
 #include "include/uart.h"
+
 void kmain(void)
 {
-    const char* s = "Hello !\n\0";
-    print(s);
-
-    // If you uncomment these lines then nothing prints :(
-    // const char* x = "Hello !\n\0";
-    // print(x);
+    print("Hello world!\n");
+    print("This is Armaan's brand new OS :)");
+    while (1) {
+    }
 }

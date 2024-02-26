@@ -1,26 +1,14 @@
-.section ".text.boot"
-
 .global _start
 
 _start:
-    // load Multiprocessor Affinity Register into x1
-    mrs     x1, mpidr_el1 
-    // Get the last two bits -> Processor Id
-    and     x1, x1, #3
-    // Jump if id ==0 
-    cbz     x1, main_proc_init
-
-// Non main proc stay in interupt loop
-other: 
-    wfe
-    b       other
-
-main_proc_init:
-    // Move start addr into stack pointer
-    ldr     x1, _start
+    // Load stack_top address
+    ldr     x1, =stack_top
+    // Move into stack pointer
     mov     sp, x1
+    // Start main
+    bl kmain
 
-call_main:
-    bl      kmain
-    b       other
+// Hang if kmain returns
+hang:
+    b hang
 
